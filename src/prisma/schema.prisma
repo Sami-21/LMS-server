@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:password@localhost:3306/LMS"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}
+model Book {
+  id       Int    @id @default(autoincrement())
+  name    String @unique
+  author String
+  edition Int
+  available Boolean @default(true) 
+  transactions Transaction[] 
+}
+
+model Transaction{
+  id       Int    @id @default(autoincrement())
+  clientName String
+  book Book @relation(fields: [bookId], references: [id])
+  bookId Int
+  price Float
+  borrowDate DateTime
+  returnDate DateTime
+}
